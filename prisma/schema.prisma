@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+model User {
+  id        Int      @id @default(autoincrement())
+  userId    String 
+  name String 
+  phone Int @unique
+  email String @unique
+  avartar String?
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  tokens    Token[]
+}
+
+model Menu{
+  id Int @id @default(autoincrement())
+  cateId Int @unique
+  cateNm String @unique
+  cateUpId Int @unique
+  order Int @unique
+  useYn String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  payload   String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
